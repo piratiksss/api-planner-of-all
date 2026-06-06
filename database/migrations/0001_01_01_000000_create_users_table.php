@@ -15,10 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+
+            // для авторизации через Google, Yandex
+            $table->string('provider_name')->nullable();
+            $table->string('provider_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            // Индекс для ускорения поиска пользователей при авторизации через соцсети
+            $table->index(['provider_name', 'provider_id']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
